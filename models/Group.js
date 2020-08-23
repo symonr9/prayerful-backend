@@ -1,31 +1,32 @@
+
 const mongoose = require("mongoose");
 
 //Has "_id" default primary key property
-const UserSchema = mongoose.Schema({
-  username: {
+const PrayerSchema = mongoose.Schema({
+  urlId: {
     type: String,
     required: true,
     unique: true
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  password: {
+  name: {
     type: String,
     required: true
   },
-  bio: {
+  about: {
     type: String
   },
-  groups: {
-    type: [String]
+  leaderName: {
+    type: String,
+    required: true
   },
   type: {
     type: String,
     required: true,
-    default: 'user'
+    default: 'normal'
+  },
+  isPublic: {
+    type: Boolean,
+    default: false
   },
   createdAt: {
     type: Date,
@@ -33,6 +34,5 @@ const UserSchema = mongoose.Schema({
   }
 });
 
-
-// export model user with UserSchema
-module.exports = mongoose.model("user", UserSchema);
+// export model user with PrayerSchema
+module.exports = mongoose.model("prayer", PrayerSchema);

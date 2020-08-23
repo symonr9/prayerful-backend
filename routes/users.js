@@ -29,6 +29,25 @@ router.get("/", async (req, res) => {
 });
 
 /**********************************************************************
+ * URI: Get Users by Group
+ * Notes: None
+ **********************************************************************/
+router.get("/group/:groupId", async (req, res) => {
+  User.find({
+    groups: { $in: [req.params.groupId] }
+  })
+    .then(users => {
+      res.status(200).json(users);
+    })
+    .catch(error => {
+      res.status(400).json({
+        error: error
+      });
+    });
+});
+
+
+/**********************************************************************
  * URI: Get User Info by username
  * Notes: None
  **********************************************************************/
