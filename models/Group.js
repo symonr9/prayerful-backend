@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 
 //Has "_id" default primary key property
-const PrayerSchema = mongoose.Schema({
+const GroupSchema = mongoose.Schema({
   urlId: {
     type: String,
     required: true,
@@ -13,6 +13,9 @@ const PrayerSchema = mongoose.Schema({
     required: true
   },
   about: {
+    type: String
+  },
+  notes: {
     type: String
   },
   leaderName: {
@@ -34,5 +37,5 @@ const PrayerSchema = mongoose.Schema({
   }
 });
 
-// export model user with PrayerSchema
-module.exports = mongoose.model("prayer", PrayerSchema);
+// export model user with GroupSchema
+module.exports = mongoose.model("group", GroupSchema);
