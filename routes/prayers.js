@@ -10,7 +10,7 @@ const { generateCombination } = require("gfycat-style-urls");
 
 var router = express.Router();
 
-const Prayer = require("../model/Prayer");
+const Prayer = require("../models/Prayer");
 
 /**********************************************************************
  * URI: Get All Prayers

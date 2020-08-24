@@ -10,7 +10,7 @@ const { generateCombination } = require("gfycat-style-urls");
 
 var router = express.Router();
 
-const Group = require("../model/Group");
+const Group = require("../models/Group");
 
 /**********************************************************************
  * URI: Get All Groups
