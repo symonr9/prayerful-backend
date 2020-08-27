@@ -73,7 +73,7 @@ router.get("/:username", async (req, res) => {
  **********************************************************************/
 router.put("/edit/:id", async (req, res, next) => {
   //Retrieve parameters from body (assumes application/json)
-  const { username, firstName, lastName, email, password, bio, image, groups, type } = req.body;
+  const { username, firstName, lastName, email, password, bio, image, groups, prayers, type } = req.body;
   const _id = req.params.id;
 
   try{
@@ -101,6 +101,7 @@ router.put("/edit/:id", async (req, res, next) => {
     bio, 
     image,
     groups,
+    prayers,
     type
   });
 

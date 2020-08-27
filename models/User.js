@@ -32,6 +32,9 @@ const UserSchema = mongoose.Schema({
   groups: {
     type: [String]
   },
+  prayers: {
+    type: [String]
+  },
   type: {
     type: String,
     required: true,
