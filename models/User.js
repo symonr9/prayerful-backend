@@ -7,6 +7,13 @@ const UserSchema = mongoose.Schema({
     required: true,
     unique: true
   },
+  firstName: {
+    type: String,
+    required: true
+  },
+  lastName: {
+    type: String
+  },
   email: {
     type: String,
     required: true,
@@ -17,6 +24,9 @@ const UserSchema = mongoose.Schema({
     required: true
   },
   bio: {
+    type: String
+  },
+  image: {
     type: String
   },
   groups: {

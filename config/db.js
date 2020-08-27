@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const MONGOURI = process.env.MONGOURI;
-
 /**********************************************************************
  * Function Name: InitiateMongoServer
  * Parameters: None

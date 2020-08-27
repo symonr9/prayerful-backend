@@ -12,6 +12,8 @@ var usersRouter = require('./routes/users');
 var groupsRouter = require('./routes/groups');
 var prayersRouter = require('./routes/prayers');
 
+InitiateMongoServer();
+
 var app = express();
 
 // view engine setup

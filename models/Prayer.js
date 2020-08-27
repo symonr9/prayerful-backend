@@ -19,6 +19,9 @@ const PrayerSchema = mongoose.Schema({
   groups: {
     type: [String]
   },
+  image: {
+    type: String
+  },
   type: {
     type: String
   },

@@ -22,6 +22,9 @@ const GroupSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  image: {
+    type: String
+  },
   type: {
     type: String,
     required: true,

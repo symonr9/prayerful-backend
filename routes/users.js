@@ -73,7 +73,7 @@ router.get("/:username", async (req, res) => {
  **********************************************************************/
 router.put("/edit/:id", async (req, res, next) => {
   //Retrieve parameters from body (assumes application/json)
-  const { username, email, password, bio, colorPrefs, fontPrefs } = req.body;
+  const { username, firstName, lastName, email, password, bio, image, groups, type } = req.body;
   const _id = req.params.id;
 
   try{
@@ -94,11 +94,14 @@ router.put("/edit/:id", async (req, res, next) => {
   const user = new User({
     _id,
     username, 
+    firstName,
+    lastName,
     email, 
     newPass, 
     bio, 
-    colorPrefs, 
-    fontPrefs
+    image,
+    groups,
+    type
   });
 
   User.updateOne({ _id: req.params.id }, user)

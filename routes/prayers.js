@@ -104,7 +104,7 @@ router.post(
     }
 
     //Retrieve parameters from body (assumes application/json)
-    const { text, notes, groups, type, isPublic, createdby } = req.body;
+    const { text, notes, groups, image, type, isPublic, createdBy } = req.body;
     
     //Use NPM library to generate random urlId.
     const urlId = `${generateCombination(2, "-")}`.toLowerCase();
@@ -114,6 +114,7 @@ router.post(
       text,
       notes,
       groups,
+      image,
       type,
       isPublic,
       createdBy
@@ -142,7 +143,7 @@ router.post(
 router.put("/edit/:id", async (req, res, next) => {
 
   //Retrieve parameters from body (assumes application/json)
-  const { text, notes, groups, type, isPublic, createdby } = req.body;
+  const { text, notes, groups, image, type, isPublic, createdBy } = req.body;
     
   const _id = req.params.id;
 
@@ -167,6 +168,7 @@ router.put("/edit/:id", async (req, res, next) => {
     text,
     notes,
     groups,
+    image,
     type,
     isPublic,
     createdBy
