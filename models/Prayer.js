@@ -8,7 +8,11 @@ const PrayerSchema = mongoose.Schema({
     required: true,
     unique: true
   },
-  text: {
+  title: {
+    type: String,
+    required: true
+  },
+  body: {
     type: String,
     required: true
   },

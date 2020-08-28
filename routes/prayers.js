@@ -90,9 +90,12 @@ router.post(
   "/create",
   [
     //Validates input.
-    check("text", "Please Enter a Valid Title")
+    check("title", "Please Enter a Valid Title")
       .not()
       .isEmpty(),
+    check("body", "Please Enter a Valid Body")
+      .not()
+      .isEmpty()
   ],
   async (req, res) => {
     //Check for errors based on what was passed in
@@ -104,14 +107,15 @@ router.post(
     }
 
     //Retrieve parameters from body (assumes application/json)
-    const { text, notes, groups, image, type, isPublic, createdBy } = req.body;
+    const { title, body, notes, groups, image, type, isPublic, createdBy } = req.body;
     
     //Use NPM library to generate random urlId.
     const urlId = `${generateCombination(2, "-")}`.toLowerCase();
 
     let prayer = new Prayer({
       urlId,
-      text,
+      title,
+      body,
       notes,
       groups,
       image,
@@ -143,7 +147,7 @@ router.post(
 router.put("/edit/:id", async (req, res, next) => {
 
   //Retrieve parameters from body (assumes application/json)
-  const { text, notes, groups, image, type, isPublic, createdBy } = req.body;
+  const { title, body, notes, groups, image, type, isPublic, createdBy } = req.body;
     
   const _id = req.params.id;
 
@@ -165,7 +169,8 @@ router.put("/edit/:id", async (req, res, next) => {
   const prayer = new Prayer({
     _id,
     urlId,
-    text,
+    title,
+    body,
     notes,
     groups,
     image,
