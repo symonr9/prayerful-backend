@@ -32,7 +32,7 @@ const GroupSchema = mongoose.Schema({
   },
   isPublic: {
     type: Boolean,
-    default: false
+    default: true
   },
   createdAt: {
     type: Date,
