@@ -13,12 +13,10 @@ const PrayerSchema = mongoose.Schema({
     required: true
   },
   body: {
-    type: String,
-    required: true
+    type: String
   },
   notes: {
-    type: String,
-    required: true
+    type: String
   },
   groups: {
     type: [String]
@@ -31,7 +29,7 @@ const PrayerSchema = mongoose.Schema({
   },
   isPublic: {
     type: Boolean,
-    default: false
+    default: true
   },
   createdBy: {
     type: String, //mongoDB doesn't have foreign keys, just put in literal of _id property. Docs based

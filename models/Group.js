@@ -15,12 +15,21 @@ const GroupSchema = mongoose.Schema({
   about: {
     type: String
   },
-  notes: {
+  notes1: {
+    type: String
+  },
+  notes2: {
+    type: String
+  },
+  notes3: {
     type: String
   },
   leaderName: {
     type: String,
     required: true
+  },
+  leaderId: {
+    type: String
   },
   image: {
     type: String

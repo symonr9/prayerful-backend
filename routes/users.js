@@ -66,6 +66,71 @@ router.get("/:username", async (req, res) => {
 });
 
 
+router.put("/add-group/:id", async (req, res, next) => {
+  //Retrieve parameters from body (assumes application/json)
+  const { id } = req.body;
+  const _id = req.params.id;
+
+  try{
+    let existingUser = await User.findOne({
+      _id
+    });
+  }
+  catch (e) {
+    console.error(e);
+    res.status(500).json({
+      message: "Server Error"
+    });
+  }
+
+  existingUser.groups.push(id);
+
+  User.updateOne({ _id: req.params.id }, user)
+    .then(() => {
+      res.status(201).json({
+        message: "User updated successfully!"
+      });
+    })
+    .catch(error => {
+      res.status(400).json({
+        error: error
+      });
+    });
+});
+
+
+router.put("/add-prayer/:id", async (req, res, next) => {
+  //Retrieve parameters from body (assumes application/json)
+  const { id } = req.body;
+  const _id = req.params.id;
+
+  try{
+    let existingUser = await User.findOne({
+      _id
+    });
+  }
+  catch (e) {
+    console.error(e);
+    res.status(500).json({
+      message: "Server Error"
+    });
+  }
+
+  existingUser.prayers.push(id);
+
+  User.updateOne({ _id: req.params.id }, user)
+    .then(() => {
+      res.status(201).json({
+        message: "User updated successfully!"
+      });
+    })
+    .catch(error => {
+      res.status(400).json({
+        error: error
+      });
+    });
+});
+
 /**********************************************************************
  * URI: Edit User
  * Notes: Expects _id, not urlId. Because it is being called on an
