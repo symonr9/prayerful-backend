@@ -10,6 +10,7 @@ const { generateCombination } = require("gfycat-style-urls");
 
 var router = express.Router();
 
+const User = require("../models/User");
 const Prayer = require("../models/Prayer");
 
 /**********************************************************************
@@ -33,17 +34,42 @@ router.get("/", async (req, res) => {
  * Notes: None
  **********************************************************************/
 router.get("/user/:username", async (req, res) => {
-  Prayer.find({
+  try {
+  let user = await User.findOne({
+    username: req.params.username
+  });
+  if (!user) {
+    console.log("Something went wrong: " + error);
+    return res.status(400).json({
+      message: "User does not exist"
+    });
+  }
+
+  let ownPrayers = await Prayer.find({
     createdBy: req.params.username
-  })
-    .then(prayers => {
-      res.status(200).json(prayers);
-    })
-    .catch(error => {
+  });
+
+  let savedPrayers = await Prayer.find({
+    '_id': { $in: user.prayers}
+  });
+ 
+  console.log('hello');
+  console.log("own prayers: " + JSON.stringify(ownPrayers));
+  console.log("saved prayers: " + JSON.stringify(savedPrayers));
+  console.log('nice');
+  let prayers = {
+    own: ownPrayers,
+    saved: savedPrayers
+  };
+
+  res.status(200).json(prayers);
+    
+  } catch(error) {
+      console.log("Something went wrong: " + error);
       res.status(400).json({
         error: error
       });
-    });
+    }
 });
 
 /**********************************************************************
