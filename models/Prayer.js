@@ -27,6 +27,14 @@ const PrayerSchema = mongoose.Schema({
   type: {
     type: String
   },
+  numOfTimesPrayedFor: {
+    type: Number,
+    default: 0
+  },
+  isPrayerAnswered: {
+    type: Boolean,
+    default: false
+  },
   isPublic: {
     type: Boolean,
     default: true

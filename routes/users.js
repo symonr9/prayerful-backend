@@ -66,56 +66,56 @@ router.get("/:username", async (req, res) => {
 });
 
 
-router.put("/add-group/:id", async (req, res, next) => {
-  //Retrieve parameters from body (assumes application/json)
+
+function addGroup(_id, req, res) {
   const { id } = req.body;
-  const _id = req.params.id;
 
-  try{
-    let existingUser = await User.findOne({
-      _id
+  User.update(
+    { _id: _id },
+    { $push: { 
+        groups: id
+    } }
+  ).then(() => {
+    res.status(201).json({
+      message: "User updated successfully!"
     });
-  }
-  catch (e) {
-    console.error(e);
-    res.status(500).json({
-      message: "Server Error"
+  })
+  .catch(error => {
+    console.log("something went wrong: " + error);
+    res.status(400).json({
+      error: error
     });
-  }
-
-  existingUser.groups.push(id);
-
-  User.updateOne({ _id: req.params.id }, user)
-    .then(() => {
-      res.status(201).json({
-        message: "User updated successfully!"
-      });
-    })
-    .catch(error => {
-      res.status(400).json({
-        error: error
-      });
-    });
-});
+  });
+}
 
 
-router.put("/add-prayer/:id", async (req, res, next) => {
-  //Retrieve parameters from body (assumes application/json)
+function removeGroup(_id, req, res) {
   const { id } = req.body;
-  const _id = req.params.id;
 
-  try{
-    let existingUser = await User.findOne({
-      _id
+  User.update(
+    { _id: _id },
+    { $pull: { 
+        groups: {
+          $in: [ id ]
+        }
+    } }
+  ).then(() => {
+    console.log("Successfully updated user!");
+    res.status(201).json({
+      message: "User updated successfully!"
     });
-  }
-  catch (e) {
-    console.error(e);
-    res.status(500).json({
-      message: "Server Error"
+  })
+  .catch(error => {
+    console.log("something went wrong: " + error);
+    res.status(400).json({
+      error: error
     });
-  }
+  });
+}
 
+function addPrayer(_id, req, res) {
+  const { id } = req.body;
+  
   User.update(
     { _id: _id },
     { $push: { 
@@ -132,25 +132,11 @@ router.put("/add-prayer/:id", async (req, res, next) => {
       error: error
     });
   });
+}
 
-});
 
-router.put("/remove-prayer/:id", async (req, res, next) => {
-  //Retrieve parameters from body (assumes application/json)
+function removePrayer( _id, req, res ) {
   const { id } = req.body;
-  const _id = req.params.id;
-
-  try{
-    let existingUser = await User.findOne({
-      _id
-    });
-  }
-  catch (e) {
-    console.error(e);
-    res.status(500).json({
-      message: "Server Error"
-    });
-  }
 
   User.update(
     { _id: _id },
@@ -171,8 +157,57 @@ router.put("/remove-prayer/:id", async (req, res, next) => {
       error: error
     });
   });
+}
 
-});
+async function newPassword(_id, req, res) {
+  const { password } = req.body;
+
+  const salt = await bcrypt.genSalt(10);
+  const newPass = await bcrypt.hash(password, salt);
+
+  User.updateOne({ _id: req.params.id }, {password: newPass})
+  .then(() => {
+    res.status(201).json({
+      message: "User updated successfully!"
+    });
+  })
+  .catch(error => {
+    console.log("ERROR: " + error);
+    res.status(400).json({
+      error: error
+    });
+  });
+
+}
+
+function edit(req, res) {
+  //Retrieve parameters from body (assumes application/json)
+  const { username, firstName, lastName, email, bio, image, type } = req.body;
+
+  const user = new User({
+    _id,
+    username, 
+    firstName,
+    lastName,
+    email, 
+    bio, 
+    image,
+    type
+  });
+
+  User.updateOne({ _id: req.params.id }, user)
+    .then(() => {
+      res.status(201).json({
+        message: "User updated successfully!"
+      });
+    })
+    .catch(error => {
+      console.log("ERROR: " + error);
+      res.status(400).json({
+        error: error
+      });
+    });
+}
 
 /**********************************************************************
  * URI: Edit User
@@ -180,8 +215,7 @@ router.put("/remove-prayer/:id", async (req, res, next) => {
  * existing item, _id is used instead of urlId because it is known.
  **********************************************************************/
 router.put("/edit/:id", async (req, res, next) => {
-  //Retrieve parameters from body (assumes application/json)
-  const { username, firstName, lastName, email, password, bio, image, groups, prayers, type } = req.body;
+  const { command } = req.body;
   const _id = req.params.id;
 
   try{
@@ -196,34 +230,28 @@ router.put("/edit/:id", async (req, res, next) => {
     });
   }
 
-  const salt = await bcrypt.genSalt(10);
-  const newPass = await bcrypt.hash(password, salt);
+  console.log("command is: " + command);
 
-  const user = new User({
-    _id,
-    username, 
-    firstName,
-    lastName,
-    email, 
-    newPass, 
-    bio, 
-    image,
-    groups,
-    prayers,
-    type
-  });
+  switch( command ) {
+    case "ADD PRAYER":
+      addPrayer(_id, req, res);
+      break;
+    case "ADD GROUP": 
+      addGroup(_id, req, res);
+      break;
+    case "REMOVE PRAYER":
+      removePrayer(_id, req, res);
+      break;
+    case "REMOVE GROUP":
+      removeGroup(_id, req, res);
+      break;
+    case "NEW PASSWORD":
+      newPassword(_id, req, res);
+    case "EDIT":
+      edit(req, res);
+      break;
+  }
 
-  User.updateOne({ _id: req.params.id }, user)
-    .then(() => {
-      res.status(201).json({
-        message: "User updated successfully!"
-      });
-    })
-    .catch(error => {
-      res.status(400).json({
-        error: error
-      });
-    });
 });
 
 
