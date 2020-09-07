@@ -116,19 +116,62 @@ router.put("/add-prayer/:id", async (req, res, next) => {
     });
   }
 
-  existingUser.prayers.push(id);
-
-  User.updateOne({ _id: req.params.id }, user)
-    .then(() => {
-      res.status(201).json({
-        message: "User updated successfully!"
-      });
-    })
-    .catch(error => {
-      res.status(400).json({
-        error: error
-      });
+  User.update(
+    { _id: _id },
+    { $push: { 
+        prayers: id
+    } }
+  ).then(() => {
+    res.status(201).json({
+      message: "User updated successfully!"
     });
+  })
+  .catch(error => {
+    console.log("something went wrong: " + error);
+    res.status(400).json({
+      error: error
+    });
+  });
+
+});
+
+router.put("/remove-prayer/:id", async (req, res, next) => {
+  //Retrieve parameters from body (assumes application/json)
+  const { id } = req.body;
+  const _id = req.params.id;
+
+  try{
+    let existingUser = await User.findOne({
+      _id
+    });
+  }
+  catch (e) {
+    console.error(e);
+    res.status(500).json({
+      message: "Server Error"
+    });
+  }
+
+  User.update(
+    { _id: _id },
+    { $pull: { 
+        prayers: {
+          $in: [ id ]
+        }
+    } }
+  ).then(() => {
+    console.log("Successfully updated user!");
+    res.status(201).json({
+      message: "User updated successfully!"
+    });
+  })
+  .catch(error => {
+    console.log("something went wrong: " + error);
+    res.status(400).json({
+      error: error
+    });
+  });
+
 });
 
 /**********************************************************************
